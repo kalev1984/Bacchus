@@ -1,0 +1,56 @@
+@model Domain.Bidding
+@{
+    ViewData["Title"] = "Create";
+}
+
+<head>
+    <title>
+        Make a bid!
+    </title>
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+    <script>
+        //https://uptime-auction-api.azurewebsites.net/api/Auction
+        $( document ).ready(function() {
+          $.getJSON('https://uptime-auction-api.azurewebsites.net/api/Auction', function(auctions) {
+            document.write(auctions.productName);
+          });
+        });
+    </script>
+</head>
+
+<h1>Bidding ends in </h1>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Bidding">
+            <div asp-validation-summary="All" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="FirstName" class="control-label"></label>
+                <input asp-for="FirstName" class="form-control" />
+                <span asp-validation-for="FirstName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="LastName" class="control-label"></label>
+                <input asp-for="LastName" class="form-control" />
+                <span asp-validation-for="LastName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Bid" class="control-label"></label>
+                <input asp-for="Bid" class="form-control" />
+                <span asp-validation-for="Bid" class="text-danger"></span>
+            </div>
+            <input asp-for="AuctionId" type="hidden" />
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

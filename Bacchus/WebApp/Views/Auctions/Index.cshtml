@@ -1,0 +1,83 @@
+@using Microsoft.AspNetCore.Mvc.Rendering
+@model WebApp.Models.AuctionViewModel
+
+@{
+    Layout = "_Layout";
+}
+<head>
+    <link rel="stylesheet" href="css/site.css">
+    <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <title>Auctions</title>
+</head>
+
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <h3 class="panel-title" >Custom Filter : </h3>
+    </div>
+    <div class="panel-body">
+        <form asp-controller="Auctions" asp-action="Index" id="form-filter" class="form-horizontal" method="get">
+            <div class="form-group">
+                <label asp-for="Category" class="col-sm-2 control-label">Categories</label>
+                <div class="col-sm-4">
+                    <select asp-for="Category" asp-items="Model.CategoriesSelectList" class="form-control">
+                        <option selected value="">All Categories</option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-sm-4">
+                    <button type="button" id="btn-filter" class="btn btn-primary">Filter</button>
+                    @if (!string.IsNullOrEmpty(Model.Category))
+                    {
+                        <button type="button" id="btn-reset" class="btn btn-default">Reset</button>
+                    }
+                </div>
+                @Model.Category
+            </div>
+        </form>
+    </div>
+</div>
+
+
+<div class="tab-content" id="nav-tabContent">
+    @if (Model != null)
+    {
+        <table class="table" cellspacing="0">
+            <thead>
+            <tr>
+                <th>
+                    @Html.Label("Product name")
+                </th>
+                <th>
+                    @Html.Label("Product description")
+                </th>
+                <th>
+                    @Html.Label("Time remaining")
+                </th>
+                <th></th>
+            </tr>
+            </thead>
+            <tbody>
+            @foreach (var item in Model.ItemList)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item!.ProductName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item!.ProductDescription)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item!.TimeLeft)
+                    </td>
+                    <td>
+                        <a asp-action="Bidding" asp-route-id="@item.ProductId">Make a bid</a>
+                    </td>
+                </tr>
+            }
+            </tbody>
+        </table>
+    }
+</div>
